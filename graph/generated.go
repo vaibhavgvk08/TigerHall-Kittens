@@ -47,6 +47,11 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
+	Coordinates struct {
+		Lat  func(childComplexity int) int
+		Long func(childComplexity int) int
+	}
+
 	Mutation struct {
 		CreateTiger     func(childComplexity int, input model.CreateTigerInput) int
 		Login           func(childComplexity int, input model.LoginUserInput) int
@@ -105,6 +110,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	ec := executionContext{nil, e, 0, 0, nil}
 	_ = ec
 	switch typeName + "." + field {
+
+	case "Coordinates.lat":
+		if e.complexity.Coordinates.Lat == nil {
+			break
+		}
+
+		return e.complexity.Coordinates.Lat(childComplexity), true
+
+	case "Coordinates.long":
+		if e.complexity.Coordinates.Long == nil {
+			break
+		}
+
+		return e.complexity.Coordinates.Long(childComplexity), true
 
 	case "Mutation.createTiger":
 		if e.complexity.Mutation.CreateTiger == nil {
@@ -251,6 +270,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	rc := graphql.GetOperationContext(ctx)
 	ec := executionContext{rc, e, 0, 0, make(chan graphql.DeferredResult)}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
+		ec.unmarshalInputInputCoordinates,
 		ec.unmarshalInputcreateTigerInput,
 		ec.unmarshalInputcreateUserInput,
 		ec.unmarshalInputloginUserInput,
@@ -507,6 +527,94 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 // endregion ************************** directives.gotpl **************************
 
 // region    **************************** field.gotpl *****************************
+
+func (ec *executionContext) _Coordinates_lat(ctx context.Context, field graphql.CollectedField, obj *model.Coordinates) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Coordinates_lat(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Lat, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Coordinates_lat(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Coordinates",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Coordinates_long(ctx context.Context, field graphql.CollectedField, obj *model.Coordinates) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Coordinates_long(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Long, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Coordinates_long(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Coordinates",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
 
 func (ec *executionContext) _Mutation_createTiger(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Mutation_createTiger(ctx, field)
@@ -1228,9 +1336,9 @@ func (ec *executionContext) _Tiger_lastSeenCoordinates(ctx context.Context, fiel
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*model.Coordinates)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNCoordinates2ᚖgithubᚗcomᚋvaibhavgvk08ᚋtigerhallᚑkittensᚋgraphᚋmodelᚐCoordinates(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Tiger_lastSeenCoordinates(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1240,7 +1348,13 @@ func (ec *executionContext) fieldContext_Tiger_lastSeenCoordinates(ctx context.C
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
+			switch field.Name {
+			case "lat":
+				return ec.fieldContext_Coordinates_lat(ctx, field)
+			case "long":
+				return ec.fieldContext_Coordinates_long(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Coordinates", field.Name)
 		},
 	}
 	return fc, nil
@@ -3236,6 +3350,40 @@ func (ec *executionContext) fieldContext___Type_specifiedByURL(ctx context.Conte
 
 // region    **************************** input.gotpl *****************************
 
+func (ec *executionContext) unmarshalInputInputCoordinates(ctx context.Context, obj interface{}) (model.InputCoordinates, error) {
+	var it model.InputCoordinates
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"lat", "long"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "lat":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lat"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Lat = data
+		case "long":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("long"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Long = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputcreateTigerInput(ctx context.Context, obj interface{}) (model.CreateTigerInput, error) {
 	var it model.CreateTigerInput
 	asMap := map[string]interface{}{}
@@ -3243,7 +3391,7 @@ func (ec *executionContext) unmarshalInputcreateTigerInput(ctx context.Context, 
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "dob", "lastSeenTimeStamp", "lastSeenCoordinates"}
+	fieldsInOrder := [...]string{"name", "dob", "lastSeenTimeStamp", "imageURL", "lastSeenCoordinates"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -3271,9 +3419,16 @@ func (ec *executionContext) unmarshalInputcreateTigerInput(ctx context.Context, 
 				return it, err
 			}
 			it.LastSeenTimeStamp = data
+		case "imageURL":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("imageURL"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ImageURL = data
 		case "lastSeenCoordinates":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastSeenCoordinates"))
-			data, err := ec.unmarshalNString2string(ctx, v)
+			data, err := ec.unmarshalOInputCoordinates2ᚖgithubᚗcomᚋvaibhavgvk08ᚋtigerhallᚑkittensᚋgraphᚋmodelᚐInputCoordinates(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -3407,6 +3562,50 @@ func (ec *executionContext) unmarshalInputsightingOfTigerInput(ctx context.Conte
 // endregion ************************** interface.gotpl ***************************
 
 // region    **************************** object.gotpl ****************************
+
+var coordinatesImplementors = []string{"Coordinates"}
+
+func (ec *executionContext) _Coordinates(ctx context.Context, sel ast.SelectionSet, obj *model.Coordinates) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, coordinatesImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Coordinates")
+		case "lat":
+			out.Values[i] = ec._Coordinates_lat(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "long":
+			out.Values[i] = ec._Coordinates_long(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
 
 var mutationImplementors = []string{"Mutation"}
 
@@ -4022,6 +4221,16 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
+func (ec *executionContext) marshalNCoordinates2ᚖgithubᚗcomᚋvaibhavgvk08ᚋtigerhallᚑkittensᚋgraphᚋmodelᚐCoordinates(ctx context.Context, sel ast.SelectionSet, v *model.Coordinates) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._Coordinates(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNID2string(ctx context.Context, v interface{}) (string, error) {
 	res, err := graphql.UnmarshalID(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -4421,6 +4630,14 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	}
 	res := graphql.MarshalBoolean(*v)
 	return res
+}
+
+func (ec *executionContext) unmarshalOInputCoordinates2ᚖgithubᚗcomᚋvaibhavgvk08ᚋtigerhallᚑkittensᚋgraphᚋmodelᚐInputCoordinates(ctx context.Context, v interface{}) (*model.InputCoordinates, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputInputCoordinates(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalOString2ᚖstring(ctx context.Context, v interface{}) (*string, error) {

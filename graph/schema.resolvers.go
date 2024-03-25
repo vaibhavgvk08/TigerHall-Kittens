@@ -9,11 +9,12 @@ import (
 	"fmt"
 
 	"github.com/vaibhavgvk08/tigerhall-kittens/graph/model"
+	"github.com/vaibhavgvk08/tigerhall-kittens/services"
 )
 
 // CreateTiger is the resolver for the createTiger field.
 func (r *mutationResolver) CreateTiger(ctx context.Context, input model.CreateTigerInput) (*model.Tiger, error) {
-	panic(fmt.Errorf("not implemented: CreateTiger - createTiger"))
+	return services.FetchTigerTrackerObject().CreateTiger(input), nil
 }
 
 // SightingOfTiger is the resolver for the sightingOfTiger field.
@@ -33,7 +34,7 @@ func (r *mutationResolver) Login(ctx context.Context, input model.LoginUserInput
 
 // Tigers is the resolver for the tigers field.
 func (r *queryResolver) Tigers(ctx context.Context) ([]*model.Tiger, error) {
-	panic(fmt.Errorf("not implemented: Tigers - tigers"))
+	return services.FetchTigerTrackerObject().ListAllTigers(), nil
 }
 
 // Tiger is the resolver for the tiger field.
