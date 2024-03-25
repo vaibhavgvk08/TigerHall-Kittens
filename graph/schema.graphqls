@@ -1,0 +1,56 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type Tiger {
+  _id: ID!
+  name: String
+  dob: String
+  lastSeenTimeStamp : String!
+  lastSeenCoordinates : String!
+  imageURL : String
+}
+
+type User {
+  id: ID!
+  username: String!
+  email: String!
+  password: String!
+}
+
+type Query {
+  tigers: [Tiger!]!
+  tiger(id: ID!): Tiger!
+}
+
+type Mutation {
+  createTiger(input: createTigerInput!): Tiger!
+  sightingOfTiger(id: ID!, input: sightingOfTigerInput!): Tiger!
+
+  register(input: createUserInput!): User!
+  login(input: loginUserInput!): User!
+}
+
+input createTigerInput {
+  name: String!
+  dob: String!
+  lastSeenTimeStamp : String!
+  lastSeenCoordinates : String!
+}
+
+input sightingOfTigerInput {
+  lastSeenTimeStamp : String!
+  lastSeenCoordinates : String!
+  imageURL : String!
+}
+
+input createUserInput {
+  username: String!
+  email: String!
+  password: String!
+}
+
+input loginUserInput {
+  username: String!
+  password: String!
+}
