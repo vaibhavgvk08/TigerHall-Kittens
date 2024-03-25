@@ -3,13 +3,13 @@
 package model
 
 type Coordinates struct {
-	Lat  string `json:"lat"`
-	Long string `json:"long"`
+	Lat  float64 `json:"lat"`
+	Long float64 `json:"long"`
 }
 
 type InputCoordinates struct {
-	Lat  string `json:"lat"`
-	Long string `json:"long"`
+	Lat  float64 `json:"lat"`
+	Long float64 `json:"long"`
 }
 
 type Mutation struct {
@@ -19,12 +19,12 @@ type Query struct {
 }
 
 type Tiger struct {
-	ID                  string       `json:"_id"`
-	Name                *string      `json:"name,omitempty"`
-	Dob                 *string      `json:"dob,omitempty"`
-	LastSeenTimeStamp   string       `json:"lastSeenTimeStamp"`
-	LastSeenCoordinates *Coordinates `json:"lastSeenCoordinates"`
-	ImageURL            *string      `json:"imageURL,omitempty"`
+	ID                  string         `json:"_id"`
+	Name                *string        `json:"name,omitempty"`
+	Dob                 *string        `json:"dob,omitempty"`
+	LastSeenTimeStamp   []string       `json:"lastSeenTimeStamp"`
+	LastSeenCoordinates []*Coordinates `json:"lastSeenCoordinates"`
+	ImageURL            *string        `json:"imageURL,omitempty"`
 }
 
 type User struct {
@@ -35,11 +35,11 @@ type User struct {
 }
 
 type CreateTigerInput struct {
-	Name                string            `json:"name"`
-	Dob                 string            `json:"dob"`
-	LastSeenTimeStamp   string            `json:"lastSeenTimeStamp"`
-	ImageURL            *string           `json:"imageURL,omitempty"`
-	LastSeenCoordinates *InputCoordinates `json:"lastSeenCoordinates,omitempty"`
+	Name                string              `json:"name"`
+	Dob                 string              `json:"dob"`
+	LastSeenTimeStamp   []string            `json:"lastSeenTimeStamp"`
+	ImageURL            *string             `json:"imageURL,omitempty"`
+	LastSeenCoordinates []*InputCoordinates `json:"lastSeenCoordinates"`
 }
 
 type CreateUserInput struct {
@@ -54,7 +54,7 @@ type LoginUserInput struct {
 }
 
 type SightingOfTigerInput struct {
-	LastSeenTimeStamp   string `json:"lastSeenTimeStamp"`
-	LastSeenCoordinates string `json:"lastSeenCoordinates"`
-	ImageURL            string `json:"imageURL"`
+	LastSeenTimeStamp   []string            `json:"lastSeenTimeStamp"`
+	LastSeenCoordinates []*InputCoordinates `json:"lastSeenCoordinates"`
+	ImageURL            string              `json:"imageURL"`
 }

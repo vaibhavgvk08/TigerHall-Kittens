@@ -19,7 +19,7 @@ func (r *mutationResolver) CreateTiger(ctx context.Context, input model.CreateTi
 
 // SightingOfTiger is the resolver for the sightingOfTiger field.
 func (r *mutationResolver) SightingOfTiger(ctx context.Context, id string, input model.SightingOfTigerInput) (*model.Tiger, error) {
-	panic(fmt.Errorf("not implemented: SightingOfTiger - sightingOfTiger"))
+	return services.FetchTigerTrackerObject().SightTigerLocation(id, input), nil
 }
 
 // Register is the resolver for the register field.
@@ -39,7 +39,7 @@ func (r *queryResolver) Tigers(ctx context.Context) ([]*model.Tiger, error) {
 
 // Tiger is the resolver for the tiger field.
 func (r *queryResolver) Tiger(ctx context.Context, id string) (*model.Tiger, error) {
-	panic(fmt.Errorf("not implemented: Tiger - tiger"))
+	return services.FetchTigerTrackerObject().ListATigers(id), nil
 }
 
 // Mutation returns MutationResolver implementation.

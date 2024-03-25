@@ -3,16 +3,16 @@
 # https://gqlgen.com/getting-started/
 
 type Coordinates {
-  lat: String!
-  long: String!
+  lat: Float!
+  long: Float!
 }
 
 type Tiger {
   _id: ID!
   name: String
   dob: String
-  lastSeenTimeStamp : String!
-  lastSeenCoordinates : Coordinates!
+  lastSeenTimeStamp : [String!]!
+  lastSeenCoordinates : [Coordinates!]!
   imageURL : String
 }
 
@@ -25,33 +25,33 @@ type User {
 
 type Query {
   tigers: [Tiger!]!
-  tiger(id: ID!): Tiger!
+  tiger(_id: ID!): Tiger!
 }
 
 type Mutation {
   createTiger(input: createTigerInput!): Tiger!
-  sightingOfTiger(id: ID!, input: sightingOfTigerInput!): Tiger!
+  sightingOfTiger(_id: ID!, input: sightingOfTigerInput!): Tiger!
 
   register(input: createUserInput!): User!
   login(input: loginUserInput!): User!
 }
 
 input InputCoordinates {
-  lat: String!
-  long: String!
+  lat: Float!
+  long: Float!
 }
 
 input createTigerInput {
   name: String!
   dob: String!
-  lastSeenTimeStamp : String!
+  lastSeenTimeStamp : [String!]!
   imageURL : String
-  lastSeenCoordinates : InputCoordinates
+  lastSeenCoordinates : [InputCoordinates!]!
 }
 
 input sightingOfTigerInput {
-  lastSeenTimeStamp : String!
-  lastSeenCoordinates : String!
+  lastSeenTimeStamp : [String!]!
+  lastSeenCoordinates : [InputCoordinates!]!
   imageURL : String!
 }
 
