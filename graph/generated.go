@@ -76,12 +76,13 @@ type ComplexityRoot struct {
 	}
 
 	Tiger struct {
-		Dob                 func(childComplexity int) int
-		ID                  func(childComplexity int) int
-		ImageURL            func(childComplexity int) int
-		LastSeenCoordinates func(childComplexity int) int
-		LastSeenTimeStamp   func(childComplexity int) int
-		Name                func(childComplexity int) int
+		Dob                  func(childComplexity int) int
+		ID                   func(childComplexity int) int
+		ImageURL             func(childComplexity int) int
+		LastSeenCoordinates  func(childComplexity int) int
+		LastSeenTimeStamp    func(childComplexity int) int
+		Name                 func(childComplexity int) int
+		UsersWhoSightedTiger func(childComplexity int) int
 	}
 
 	User struct {
@@ -279,6 +280,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Tiger.Name(childComplexity), true
+
+	case "Tiger.usersWhoSightedTiger":
+		if e.complexity.Tiger.UsersWhoSightedTiger == nil {
+			break
+		}
+
+		return e.complexity.Tiger.UsersWhoSightedTiger(childComplexity), true
 
 	case "User.email":
 		if e.complexity.User.Email == nil {
@@ -842,6 +850,8 @@ func (ec *executionContext) fieldContext_Mutation_createTiger(ctx context.Contex
 				return ec.fieldContext_Tiger_lastSeenCoordinates(ctx, field)
 			case "imageURL":
 				return ec.fieldContext_Tiger_imageURL(ctx, field)
+			case "usersWhoSightedTiger":
+				return ec.fieldContext_Tiger_usersWhoSightedTiger(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Tiger", field.Name)
 		},
@@ -911,6 +921,8 @@ func (ec *executionContext) fieldContext_Mutation_sightingOfTiger(ctx context.Co
 				return ec.fieldContext_Tiger_lastSeenCoordinates(ctx, field)
 			case "imageURL":
 				return ec.fieldContext_Tiger_imageURL(ctx, field)
+			case "usersWhoSightedTiger":
+				return ec.fieldContext_Tiger_usersWhoSightedTiger(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Tiger", field.Name)
 		},
@@ -1104,6 +1116,8 @@ func (ec *executionContext) fieldContext_Query_tigers(ctx context.Context, field
 				return ec.fieldContext_Tiger_lastSeenCoordinates(ctx, field)
 			case "imageURL":
 				return ec.fieldContext_Tiger_imageURL(ctx, field)
+			case "usersWhoSightedTiger":
+				return ec.fieldContext_Tiger_usersWhoSightedTiger(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Tiger", field.Name)
 		},
@@ -1162,6 +1176,8 @@ func (ec *executionContext) fieldContext_Query_tiger(ctx context.Context, field 
 				return ec.fieldContext_Tiger_lastSeenCoordinates(ctx, field)
 			case "imageURL":
 				return ec.fieldContext_Tiger_imageURL(ctx, field)
+			case "usersWhoSightedTiger":
+				return ec.fieldContext_Tiger_usersWhoSightedTiger(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Tiger", field.Name)
 		},
@@ -1643,6 +1659,50 @@ func (ec *executionContext) _Tiger_imageURL(ctx context.Context, field graphql.C
 }
 
 func (ec *executionContext) fieldContext_Tiger_imageURL(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Tiger",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Tiger_usersWhoSightedTiger(ctx context.Context, field graphql.CollectedField, obj *model.Tiger) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Tiger_usersWhoSightedTiger(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UsersWhoSightedTiger, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	fc.Result = res
+	return ec.marshalNString2ᚕstringᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Tiger_usersWhoSightedTiger(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Tiger",
 		Field:      field,
@@ -3645,7 +3705,7 @@ func (ec *executionContext) unmarshalInputcreateTigerInput(ctx context.Context, 
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "dob", "lastSeenTimeStamp", "imageURL", "lastSeenCoordinates"}
+	fieldsInOrder := [...]string{"name", "dob", "lastSeenTimeStamp", "imageURL", "lastSeenCoordinates", "usersWhoSightedTiger"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -3687,6 +3747,13 @@ func (ec *executionContext) unmarshalInputcreateTigerInput(ctx context.Context, 
 				return it, err
 			}
 			it.LastSeenCoordinates = data
+		case "usersWhoSightedTiger":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("usersWhoSightedTiger"))
+			data, err := ec.unmarshalNString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UsersWhoSightedTiger = data
 		}
 	}
 
@@ -3775,7 +3842,7 @@ func (ec *executionContext) unmarshalInputsightingOfTigerInput(ctx context.Conte
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"lastSeenTimeStamp", "lastSeenCoordinates", "imageURL"}
+	fieldsInOrder := [...]string{"lastSeenTimeStamp", "lastSeenCoordinates", "imageURL", "usersWhoSightedTiger"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -3803,6 +3870,13 @@ func (ec *executionContext) unmarshalInputsightingOfTigerInput(ctx context.Conte
 				return it, err
 			}
 			it.ImageURL = data
+		case "usersWhoSightedTiger":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("usersWhoSightedTiger"))
+			data, err := ec.unmarshalNString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UsersWhoSightedTiger = data
 		}
 	}
 
@@ -4144,6 +4218,11 @@ func (ec *executionContext) _Tiger(ctx context.Context, sel ast.SelectionSet, ob
 			}
 		case "imageURL":
 			out.Values[i] = ec._Tiger_imageURL(ctx, field, obj)
+		case "usersWhoSightedTiger":
+			out.Values[i] = ec._Tiger_usersWhoSightedTiger(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}

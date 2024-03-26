@@ -80,3 +80,22 @@ func LoginUser(input model.LoginUserInput) *model.LoginResponse {
 		AccessToken: jwtToken,
 	}
 }
+
+func FetchUsersEmails(usernames []string) []string {
+	filter := bson.M{"username": bson.M{"$in": usernames}}
+	result, err := database.FetchDBManager().Find(constants.USER, filter)
+
+	if err != nil {
+		panic(err)
+	}
+	var userInDB []*model.User
+	err = json.Unmarshal(result, &userInDB)
+	if err != nil || len(userInDB) == 0 {
+		panic(err)
+	}
+	var emailList []string
+	for _, user := range userInDB {
+		emailList = append(emailList, user.Email)
+	}
+	return emailList
+}

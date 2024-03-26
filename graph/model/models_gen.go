@@ -30,12 +30,13 @@ type Response struct {
 }
 
 type Tiger struct {
-	ID                  string         `json:"_id"`
-	Name                *string        `json:"name,omitempty"`
-	Dob                 *string        `json:"dob,omitempty"`
-	LastSeenTimeStamp   []string       `json:"lastSeenTimeStamp"`
-	LastSeenCoordinates []*Coordinates `json:"lastSeenCoordinates"`
-	ImageURL            *string        `json:"imageURL,omitempty"`
+	ID                   string         `json:"_id"`
+	Name                 *string        `json:"name,omitempty"`
+	Dob                  *string        `json:"dob,omitempty"`
+	LastSeenTimeStamp    []string       `json:"lastSeenTimeStamp"`
+	LastSeenCoordinates  []*Coordinates `json:"lastSeenCoordinates"`
+	ImageURL             *string        `json:"imageURL,omitempty"`
+	UsersWhoSightedTiger []string       `json:"usersWhoSightedTiger"`
 }
 
 type User struct {
@@ -46,11 +47,12 @@ type User struct {
 }
 
 type CreateTigerInput struct {
-	Name                string              `json:"name"`
-	Dob                 string              `json:"dob"`
-	LastSeenTimeStamp   []string            `json:"lastSeenTimeStamp"`
-	ImageURL            *string             `json:"imageURL,omitempty"`
-	LastSeenCoordinates []*InputCoordinates `json:"lastSeenCoordinates"`
+	Name                 string              `json:"name"`
+	Dob                  string              `json:"dob"`
+	LastSeenTimeStamp    []string            `json:"lastSeenTimeStamp"`
+	ImageURL             *string             `json:"imageURL,omitempty"`
+	LastSeenCoordinates  []*InputCoordinates `json:"lastSeenCoordinates"`
+	UsersWhoSightedTiger []string            `json:"usersWhoSightedTiger"`
 }
 
 type CreateUserInput struct {
@@ -65,7 +67,8 @@ type LoginUserInput struct {
 }
 
 type SightingOfTigerInput struct {
-	LastSeenTimeStamp   []string            `json:"lastSeenTimeStamp"`
-	LastSeenCoordinates []*InputCoordinates `json:"lastSeenCoordinates"`
-	ImageURL            string              `json:"imageURL"`
+	LastSeenTimeStamp    []string            `json:"lastSeenTimeStamp"`
+	LastSeenCoordinates  []*InputCoordinates `json:"lastSeenCoordinates"`
+	ImageURL             string              `json:"imageURL"`
+	UsersWhoSightedTiger []string            `json:"usersWhoSightedTiger"`
 }

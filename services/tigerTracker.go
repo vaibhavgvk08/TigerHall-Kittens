@@ -27,11 +27,12 @@ func FetchTigerTrackerObject() *TigerTrackerService {
 
 func (tg *TigerTrackerService) CreateTiger(input model.CreateTigerInput) *model.Tiger {
 	doc := bson.M{
-		"name":                input.Name,
-		"dob":                 input.Dob,
-		"lastSeenTimeStamp":   input.LastSeenTimeStamp,
-		"lastSeenCoordinates": input.LastSeenCoordinates,
-		"imageURL":            input.ImageURL,
+		"name":                 input.Name,
+		"dob":                  input.Dob,
+		"lastSeenTimeStamp":    input.LastSeenTimeStamp,
+		"lastSeenCoordinates":  input.LastSeenCoordinates,
+		"imageURL":             input.ImageURL,
+		"usersWhoSightedTiger": input.UsersWhoSightedTiger,
 	}
 
 	result, err := database.FetchDBManager().Insert(constants.TIGER, doc)
@@ -66,11 +67,13 @@ func (tg *TigerTrackerService) SightTigerLocation(id string, input model.Sightin
 		}
 		latestCoordinates = append(latestCoordinates, cood)
 		lastSeenCoordList := append(latestCoordinates, tiger.LastSeenCoordinates...)
+		usersWhoSightedTigerList := append(input.UsersWhoSightedTiger, tiger.UsersWhoSightedTiger...)
 
 		update := bson.D{
 			{"$set", bson.D{
 				{"lastSeenTimeStamp", lastSeenTimeStampList},
 				{"lastSeenCoordinates", lastSeenCoordList},
+				{"usersWhoSightedTiger", usersWhoSightedTigerList},
 			}},
 		}
 
@@ -78,14 +81,17 @@ func (tg *TigerTrackerService) SightTigerLocation(id string, input model.Sightin
 		if err != nil {
 			panic(err)
 		}
-		return &model.Tiger{
-			ID:                  id,
-			Name:                tiger.Name,
-			Dob:                 tiger.Dob,
-			LastSeenTimeStamp:   lastSeenTimeStampList,
-			LastSeenCoordinates: nil,
-			ImageURL:            &input.ImageURL,
+		tigerData := &model.Tiger{
+			ID:                   id,
+			Name:                 tiger.Name,
+			Dob:                  tiger.Dob,
+			LastSeenTimeStamp:    lastSeenTimeStampList,
+			LastSeenCoordinates:  lastSeenCoordList,
+			ImageURL:             &input.ImageURL,
+			UsersWhoSightedTiger: usersWhoSightedTigerList,
 		}
+		PrepareAndSendEmails(tigerData)
+		return tigerData
 	}
 	return nil
 }

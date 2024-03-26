@@ -14,6 +14,7 @@ type Tiger {
   lastSeenTimeStamp : [String!]!
   lastSeenCoordinates : [Coordinates!]!
   imageURL : String
+  usersWhoSightedTiger : [String!]!
 }
 
 type User {
@@ -58,12 +59,14 @@ input createTigerInput {
   lastSeenTimeStamp : [String!]!
   imageURL : String
   lastSeenCoordinates : [InputCoordinates!]!
+  usersWhoSightedTiger : [String!]!
 }
 
 input sightingOfTigerInput {
   lastSeenTimeStamp : [String!]!
   lastSeenCoordinates : [InputCoordinates!]!
   imageURL : String!
+  usersWhoSightedTiger : [String!]!
 }
 
 input createUserInput {
