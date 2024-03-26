@@ -12,6 +12,11 @@ type InputCoordinates struct {
 	Long float64 `json:"long"`
 }
 
+type InputParams struct {
+	Offset *int `json:"offset,omitempty"`
+	Limit  *int `json:"limit,omitempty"`
+}
+
 type LoginResponse struct {
 	Status      string  `json:"status"`
 	Error       *string `json:"error,omitempty"`

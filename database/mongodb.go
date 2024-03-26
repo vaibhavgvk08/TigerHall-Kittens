@@ -35,9 +35,14 @@ func Connect(uri string) *MongoDB {
 	return mongodb
 }
 
-func (obj *MongoDB) Find(dataBase, col string, query interface{}) (result []byte, err error) { //*mongo.Cursor
+func (obj *MongoDB) Find(dataBase, col string, query interface{}, sortOrder, skip, limit int) (result []byte, err error) { //*mongo.Cursor
 	collection := obj.dbclient.Database(dataBase).Collection(col)
-	opts := options.Find().SetSort(bson.D{{"lastSeenTimeStamp", -1}})
+	opts := options.Find().SetSort(bson.D{{"lastSeenTimeStamp", sortOrder}})
+	// todo : Try to optimize this later.
+	if limit != 0 {
+		opts.SetSkip(int64(skip))
+		opts.SetLimit(int64(limit))
+	}
 	cursor, err := collection.Find(obj.dbcontext, query, opts)
 	var jsonBytes []byte
 

@@ -32,8 +32,8 @@ func (r *mutationResolver) Login(ctx context.Context, input model.LoginUserInput
 }
 
 // Tigers is the resolver for the tigers field.
-func (r *queryResolver) Tigers(ctx context.Context) ([]*model.Tiger, error) {
-	return services.FetchTigerTrackerObject().ListAllTigers(), nil
+func (r *queryResolver) Tigers(ctx context.Context, input *model.InputParams) ([]*model.Tiger, error) {
+	return services.FetchTigerTrackerObject().ListAllTigers(input), nil
 }
 
 // Tiger is the resolver for the tiger field.

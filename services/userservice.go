@@ -40,7 +40,7 @@ func RegisterUser(request model.CreateUserInput) *model.Response {
 
 func LoginUser(input model.LoginUserInput) *model.LoginResponse {
 	filter := bson.M{"username": bson.M{"$eq": input.Username}}
-	result, err := database.FetchDBManager().Find(constants.USER, filter)
+	result, err := database.FetchDBManager().Find(constants.USER, filter, database.DEFAULT_SORT_ORDER, 0, 0)
 
 	if err != nil {
 		panic(err)
@@ -83,7 +83,7 @@ func LoginUser(input model.LoginUserInput) *model.LoginResponse {
 
 func FetchUsersEmails(usernames []string) []string {
 	filter := bson.M{"username": bson.M{"$in": usernames}}
-	result, err := database.FetchDBManager().Find(constants.USER, filter)
+	result, err := database.FetchDBManager().Find(constants.USER, filter, database.DEFAULT_SORT_ORDER, 0, 0)
 
 	if err != nil {
 		panic(err)

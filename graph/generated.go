@@ -67,7 +67,7 @@ type ComplexityRoot struct {
 
 	Query struct {
 		Tiger  func(childComplexity int, id string) int
-		Tigers func(childComplexity int) int
+		Tigers func(childComplexity int, input *model.InputParams) int
 	}
 
 	Response struct {
@@ -100,7 +100,7 @@ type MutationResolver interface {
 	Login(ctx context.Context, input model.LoginUserInput) (*model.LoginResponse, error)
 }
 type QueryResolver interface {
-	Tigers(ctx context.Context) ([]*model.Tiger, error)
+	Tigers(ctx context.Context, input *model.InputParams) ([]*model.Tiger, error)
 	Tiger(ctx context.Context, id string) (*model.Tiger, error)
 }
 
@@ -223,7 +223,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Query.Tigers(childComplexity), true
+		args, err := ec.field_Query_tigers_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Tigers(childComplexity, args["input"].(*model.InputParams)), true
 
 	case "Response.error":
 		if e.complexity.Response.Error == nil {
@@ -325,6 +330,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	ec := executionContext{rc, e, 0, 0, make(chan graphql.DeferredResult)}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputInputCoordinates,
+		ec.unmarshalInputInputParams,
 		ec.unmarshalInputcreateTigerInput,
 		ec.unmarshalInputcreateUserInput,
 		ec.unmarshalInputloginUserInput,
@@ -541,6 +547,21 @@ func (ec *executionContext) field_Query_tiger_args(ctx context.Context, rawArgs 
 		}
 	}
 	args["_id"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_tigers_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 *model.InputParams
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalOInputParams2ᚖgithubᚗcomᚋvaibhavgvk08ᚋtigerhallᚑkittensᚋgraphᚋmodelᚐInputParams(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
 	return args, nil
 }
 
@@ -1079,7 +1100,7 @@ func (ec *executionContext) _Query_tigers(ctx context.Context, field graphql.Col
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Tigers(rctx)
+		return ec.resolvers.Query().Tigers(rctx, fc.Args["input"].(*model.InputParams))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1121,6 +1142,17 @@ func (ec *executionContext) fieldContext_Query_tigers(ctx context.Context, field
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Tiger", field.Name)
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_tigers_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -3698,6 +3730,40 @@ func (ec *executionContext) unmarshalInputInputCoordinates(ctx context.Context, 
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputInputParams(ctx context.Context, obj interface{}) (model.InputParams, error) {
+	var it model.InputParams
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"offset", "limit"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "offset":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Offset = data
+		case "limit":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Limit = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputcreateTigerInput(ctx context.Context, obj interface{}) (model.CreateTigerInput, error) {
 	var it model.CreateTigerInput
 	asMap := map[string]interface{}{}
@@ -5176,6 +5242,30 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 		return graphql.Null
 	}
 	res := graphql.MarshalBoolean(*v)
+	return res
+}
+
+func (ec *executionContext) unmarshalOInputParams2ᚖgithubᚗcomᚋvaibhavgvk08ᚋtigerhallᚑkittensᚋgraphᚋmodelᚐInputParams(ctx context.Context, v interface{}) (*model.InputParams, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputInputParams(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalOInt2ᚖint(ctx context.Context, v interface{}) (*int, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := graphql.UnmarshalInt(v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOInt2ᚖint(ctx context.Context, sel ast.SelectionSet, v *int) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	res := graphql.MarshalInt(*v)
 	return res
 }
 

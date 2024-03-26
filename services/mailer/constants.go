@@ -1,7 +1,9 @@
 package mailer
 
 var (
-	EMAIL_SENDER = "vaibhavgvk08@gmail.com"
+	EMAIL_SENDER   = "vaibhavgvk08@gmail.com"
+	EMAIL_HOST     = "smtp.gmail.com"
+	EMAIL_USERNAME = "vaibhavgvk08@gmail.com"
 
 	EMAIL_TOKEN = "test"
 

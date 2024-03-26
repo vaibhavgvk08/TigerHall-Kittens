@@ -41,9 +41,9 @@ func (obj *DBManager) Delete(entity int, query interface{}) (result interface{},
 	return result, err
 }
 
-func (obj *DBManager) Find(entity int, query interface{}) (result []byte, err error) {
+func (obj *DBManager) Find(entity int, query interface{}, sortOrder, skip, limit int) (result []byte, err error) {
 	dataBase, col := GetDBAndCollByEntity(entity)
-	result, err = obj.client.Find(dataBase, col, query)
+	result, err = obj.client.Find(dataBase, col, query, sortOrder, skip, limit)
 	return result, err
 }
 

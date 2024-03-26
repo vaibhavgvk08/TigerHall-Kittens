@@ -96,8 +96,8 @@ func (tg *TigerTrackerService) SightTigerLocation(id string, input model.Sightin
 	return nil
 }
 
-func (tg *TigerTrackerService) ListAllTigers() []*model.Tiger {
-	result, err := database.FetchDBManager().Find(constants.TIGER, bson.D{})
+func (tg *TigerTrackerService) ListAllTigers(input *model.InputParams) []*model.Tiger {
+	result, err := database.FetchDBManager().Find(constants.TIGER, bson.D{}, database.DEFAULT_SORT_ORDER, *input.Offset, *input.Limit)
 	if err != nil {
 		panic(err)
 	}
@@ -116,7 +116,7 @@ func (tg *TigerTrackerService) ListATigers(id string) *model.Tiger {
 	}
 
 	filter := bson.M{"_id": bson.M{"$eq": objID}}
-	result, err := database.FetchDBManager().Find(constants.TIGER, filter)
+	result, err := database.FetchDBManager().Find(constants.TIGER, filter, database.DEFAULT_SORT_ORDER, 0, 0)
 
 	if err != nil {
 		panic(err)

@@ -18,4 +18,6 @@ var (
 			CollectionName: "UserCollection",
 		},
 	}
+
+	DEFAULT_SORT_ORDER = -1 // Sort in Ascending order.
 )
