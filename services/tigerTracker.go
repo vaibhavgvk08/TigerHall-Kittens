@@ -5,6 +5,7 @@ import (
 	"github.com/vaibhavgvk08/tigerhall-kittens/constants"
 	"github.com/vaibhavgvk08/tigerhall-kittens/database"
 	"github.com/vaibhavgvk08/tigerhall-kittens/graph/model"
+	"github.com/vaibhavgvk08/tigerhall-kittens/services/common"
 	"github.com/vaibhavgvk08/tigerhall-kittens/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -42,7 +43,7 @@ func (tg *TigerTrackerService) CreateTiger(input model.CreateTigerInput) *model.
 		Id = id.Hex()
 	}
 	//insertedID := result.In.(primitive.ObjectID).String()
-	return CreateTiger(Id, input)
+	return common.CreateTiger(Id, input)
 }
 
 func (tg *TigerTrackerService) SightTigerLocation(id string, input model.SightingOfTigerInput) *model.Tiger {

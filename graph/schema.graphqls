@@ -23,6 +23,17 @@ type User {
   password: String!
 }
 
+type Response {
+  status: String!
+  error: String
+}
+
+type LoginResponse {
+  status: String!
+  error: String
+  AccessToken: String!
+}
+
 type Query {
   tigers: [Tiger!]!
   tiger(_id: ID!): Tiger!
@@ -32,8 +43,8 @@ type Mutation {
   createTiger(input: createTigerInput!): Tiger!
   sightingOfTiger(_id: ID!, input: sightingOfTigerInput!): Tiger!
 
-  register(input: createUserInput!): User!
-  login(input: loginUserInput!): User!
+  register(input: createUserInput!): Response!
+  login(input: loginUserInput!): LoginResponse!
 }
 
 input InputCoordinates {

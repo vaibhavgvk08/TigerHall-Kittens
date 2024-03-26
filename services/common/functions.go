@@ -1,4 +1,4 @@
-package services
+package common
 
 import "github.com/vaibhavgvk08/tigerhall-kittens/graph/model"
 

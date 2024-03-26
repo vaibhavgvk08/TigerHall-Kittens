@@ -12,10 +12,21 @@ type InputCoordinates struct {
 	Long float64 `json:"long"`
 }
 
+type LoginResponse struct {
+	Status      string  `json:"status"`
+	Error       *string `json:"error,omitempty"`
+	AccessToken string  `json:"AccessToken"`
+}
+
 type Mutation struct {
 }
 
 type Query struct {
+}
+
+type Response struct {
+	Status string  `json:"status"`
+	Error  *string `json:"error,omitempty"`
 }
 
 type Tiger struct {

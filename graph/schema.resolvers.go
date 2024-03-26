@@ -6,7 +6,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/vaibhavgvk08/tigerhall-kittens/graph/model"
 	"github.com/vaibhavgvk08/tigerhall-kittens/services"
@@ -23,13 +22,13 @@ func (r *mutationResolver) SightingOfTiger(ctx context.Context, id string, input
 }
 
 // Register is the resolver for the register field.
-func (r *mutationResolver) Register(ctx context.Context, input model.CreateUserInput) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: Register - register"))
+func (r *mutationResolver) Register(ctx context.Context, input model.CreateUserInput) (*model.Response, error) {
+	return services.RegisterUser(input), nil
 }
 
 // Login is the resolver for the login field.
-func (r *mutationResolver) Login(ctx context.Context, input model.LoginUserInput) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: Login - login"))
+func (r *mutationResolver) Login(ctx context.Context, input model.LoginUserInput) (*model.LoginResponse, error) {
+	return services.LoginUser(input), nil
 }
 
 // Tigers is the resolver for the tigers field.

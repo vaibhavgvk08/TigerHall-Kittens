@@ -9,9 +9,13 @@ type Data struct {
 
 var (
 	DBMapping = map[int]Data{
-		constants.TIGER: Data{
+		constants.TIGER: {
 			DBName:         "TigerDB",
 			CollectionName: "TigerCollection",
+		},
+		constants.USER: {
+			DBName:         "UserDB",
+			CollectionName: "UserCollection",
 		},
 	}
 )
