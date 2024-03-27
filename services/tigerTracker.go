@@ -53,6 +53,10 @@ func (tg *TigerTrackerService) SightTigerLocation(id string, input model.Sightin
 	if err != nil {
 		return nil, err
 	}
+
+	if isLatest, _ := utils.IsCurrentTimeStampLatest(input.LastSeenTimeStamp, tigerDBObject.LastSeenTimeStamp[0]); !isLatest {
+		return nil, errors.New("tiger sighting timestamp provided is not latest, we already have a latest sighting in our db in comparision to the timestamp provided in input. \n please provide a latest sighting with recent timestamp.")
+	}
 	recentCoordinates := input.LastSeenCoordinates
 	previousCoordinates := tigerDBObject.LastSeenCoordinates[0]
 	// pre conditions

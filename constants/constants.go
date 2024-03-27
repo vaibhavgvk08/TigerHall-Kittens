@@ -10,6 +10,8 @@ const (
 	SIGHTING_DISTANCE_UNITS     = "KMS"
 
 	MESSAGE_QUEUE_BUFFER_SIZE = 10
+
+	TIMSTAMP_FORMAT = "20060102150405"
 )
 
 var SECRET_KEY = []byte("gosecretkey")

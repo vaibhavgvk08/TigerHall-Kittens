@@ -1,6 +1,10 @@
 package utils
 
-import "math"
+import (
+	"github.com/vaibhavgvk08/tigerhall-kittens/constants"
+	"math"
+	"time"
+)
 
 func Distance(lat1 float64, lng1 float64, lat2 float64, lng2 float64, unit ...string) float64 {
 	radlat1 := float64(math.Pi * lat1 / 180)
@@ -62,4 +66,21 @@ func MergeListsWithOutDuplicates(list1, list2 []string) []string {
 	}
 
 	return mergedList
+}
+
+func IsCurrentTimeStampLatest(currentTimestampStr, previousTimestampStr string) (bool, error) {
+	// Parse the current timestamp
+	currentTimestamp, err := time.Parse(constants.TIMSTAMP_FORMAT, currentTimestampStr)
+	if err != nil {
+		return false, err
+	}
+
+	// Parse the previous timestamp
+	previousTimestamp, err := time.Parse(constants.TIMSTAMP_FORMAT, previousTimestampStr)
+	if err != nil {
+		return false, err
+	}
+
+	// Compare timestamps
+	return currentTimestamp.After(previousTimestamp), nil
 }
