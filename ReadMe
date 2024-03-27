@@ -1,0 +1,34 @@
+Prerequisites:
+    1. Programming language used : go1.20.3
+        Install golang [Refer for help : https://go.dev/doc/install]
+
+    2. DataBase used : Mongo DB - 7.0.7
+        Install mongo DB [Refer for help : https://www.mongodb.com/docs/manual/installation/]
+
+    3. Currently we are using gmail for sending Emails. Please generate a app password from gmail and set it in os.env under the key : password.
+        Refer for help : https://medium.com/@piusrestiantoro02/how-to-generate-a-gmail-app-password-0e71cd41fd3c
+
+Steps to run the project:
+
+1. Download the project using the command "git clone git@github.com:vaibhavgvk08/TigerHall-Kittens.git"
+
+2. Navigate to the root directory of the project in your terminal or editor.
+
+3. Run the following command to initialize Go modules:
+   ```
+   go mod init github.com/vaibhavgvk08/tigerhall-kittens
+   ```
+
+4. Run the following command to ensure Go modules are tidy:
+   ```
+   go mod tidy
+   ```
+
+5. Finally, run the following command to install dependencies:
+   ```
+   go mod download
+   ```
+6. After all dependency modules are successfully installed, run the following command to start the server :
+   ```
+   go run server.go
+   ```

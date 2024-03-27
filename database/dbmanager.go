@@ -44,6 +44,6 @@ func (obj *DBManager) Find(entity int, query interface{}, sortOrder, skip, limit
 
 func init() {
 	DBManagerInstance = &DBManager{
-		client: Connect("mongodb://127.0.0.1:27018/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.2.1"),
+		client: Connect("mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.2.1"),
 	}
 }

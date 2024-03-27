@@ -5,6 +5,7 @@ import (
 	"github.com/go-mail/mail"
 	"github.com/vaibhavgvk08/tigerhall-kittens/services/common"
 	"log"
+	"os"
 )
 
 // email consumer
@@ -30,7 +31,7 @@ func sendEmail(emailData common.EmailData) {
 
 	m.SetBody("text/html", fmt.Sprintf(EMAIL_BODY, *emailData.TigerName, emailData.TigerLastSeenTimestamp, emailData.TigerLastSeenCoordinates.Lat, emailData.TigerLastSeenCoordinates.Long))
 
-	d := mail.NewDialer(EMAIL_HOST, 587, EMAIL_USERNAME, EMAIL_TOKEN)
+	d := mail.NewDialer(EMAIL_HOST, 587, EMAIL_USERNAME, os.Getenv("password"))
 
 	if err := d.DialAndSend(m); err != nil {
 		panic(err)

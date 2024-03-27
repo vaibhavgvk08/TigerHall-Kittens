@@ -6,7 +6,7 @@ var (
 	EMAIL_USERNAME = "vaibhavgvk08@gmail.com"
 	EMAIL_SUBJECT  = "TigerHall - Kittens!"
 
-	EMAIL_TOKEN = "eqfy varx stqo zsbb"
+	EMAIL_TOKEN = "test"
 
 	EMAIL_BODY = "Hello there, <br/><br/><br/> %s has been spotted at TimeStamp: %s in the following location [lat : %f, long: %f] <br/><br/><br/> Thanks<br/>TigerHallKittens"
 )
