@@ -11,10 +11,10 @@ type Tiger {
   _id: ID!
   name: String
   dob: String
-  lastSeenTimeStamp : [String!]!
-  lastSeenCoordinates : [Coordinates!]!
+  lastSeenTimeStamp : String!
+  lastSeenCoordinates : Coordinates!
   imageURL : String
-  usersWhoSightedTiger : [String!]!
+  reporterUserName : String!
 }
 
 type User {
@@ -29,6 +29,16 @@ type Response {
   error: String
 }
 
+type TigerSightings {
+  name: String
+  sightings: [Sighting]
+}
+
+type Sighting {
+  timestamp : String
+  coordinates : Coordinates
+}
+
 type LoginResponse {
   status: String!
   error: String
@@ -41,8 +51,8 @@ input InputParams {
 }
 
 type Query {
-  tigers(input: InputParams): [Tiger!]!
-  tiger(_id: ID!): Tiger!
+  listAllTigers(input: InputParams): [Tiger!]!
+  listAllSightingsOfATiger(_id: ID!): TigerSightings!
 }
 
 type Mutation {
@@ -61,17 +71,17 @@ input InputCoordinates {
 input createTigerInput {
   name: String!
   dob: String!
-  lastSeenTimeStamp : [String!]!
+  lastSeenTimeStamp : String!
   imageURL : String
-  lastSeenCoordinates : [InputCoordinates!]!
-  usersWhoSightedTiger : [String!]!
+  lastSeenCoordinates : InputCoordinates!
+  reporterUserName : String!
 }
 
 input sightingOfTigerInput {
-  lastSeenTimeStamp : [String!]!
-  lastSeenCoordinates : [InputCoordinates!]!
+  lastSeenTimeStamp : String!
+  lastSeenCoordinates : InputCoordinates!
   imageURL : String!
-  usersWhoSightedTiger : [String!]!
+  reporterUserName : String!
 }
 
 input createUserInput {

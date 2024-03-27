@@ -28,3 +28,38 @@ func Distance(lat1 float64, lng1 float64, lat2 float64, lng2 float64, unit ...st
 
 	return dist
 }
+
+func RemoveAItemFromList(list1 []string, currentElem string) []string {
+	var newlist []string
+	for _, elem := range list1 {
+		if elem != currentElem {
+			newlist = append(newlist, elem)
+		}
+	}
+	return newlist
+}
+
+func MergeListsWithOutDuplicates(list1, list2 []string) []string {
+	// Create a map to store unique elements
+	uniqueMap := make(map[string]bool)
+
+	// Add elements from list1 to the map
+	for _, item := range list1 {
+		uniqueMap[item] = true
+	}
+
+	// Add elements from list2 to the map
+	for _, item := range list2 {
+		if _, exists := uniqueMap[item]; !exists {
+			uniqueMap[item] = true
+		}
+	}
+
+	// Extract unique elements from the map into a slice
+	var mergedList []string
+	for item := range uniqueMap {
+		mergedList = append(mergedList, item)
+	}
+
+	return mergedList
+}

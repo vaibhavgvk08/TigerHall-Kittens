@@ -34,14 +34,24 @@ type Response struct {
 	Error  *string `json:"error,omitempty"`
 }
 
+type Sighting struct {
+	Timestamp   *string      `json:"timestamp,omitempty"`
+	Coordinates *Coordinates `json:"coordinates,omitempty"`
+}
+
 type Tiger struct {
-	ID                   string         `json:"_id"`
-	Name                 *string        `json:"name,omitempty"`
-	Dob                  *string        `json:"dob,omitempty"`
-	LastSeenTimeStamp    []string       `json:"lastSeenTimeStamp"`
-	LastSeenCoordinates  []*Coordinates `json:"lastSeenCoordinates"`
-	ImageURL             *string        `json:"imageURL,omitempty"`
-	UsersWhoSightedTiger []string       `json:"usersWhoSightedTiger"`
+	ID                  string       `json:"_id"`
+	Name                *string      `json:"name,omitempty"`
+	Dob                 *string      `json:"dob,omitempty"`
+	LastSeenTimeStamp   string       `json:"lastSeenTimeStamp"`
+	LastSeenCoordinates *Coordinates `json:"lastSeenCoordinates"`
+	ImageURL            *string      `json:"imageURL,omitempty"`
+	ReporterUserName    string       `json:"reporterUserName"`
+}
+
+type TigerSightings struct {
+	Name      *string     `json:"name,omitempty"`
+	Sightings []*Sighting `json:"sightings,omitempty"`
 }
 
 type User struct {
@@ -52,12 +62,12 @@ type User struct {
 }
 
 type CreateTigerInput struct {
-	Name                 string              `json:"name"`
-	Dob                  string              `json:"dob"`
-	LastSeenTimeStamp    []string            `json:"lastSeenTimeStamp"`
-	ImageURL             *string             `json:"imageURL,omitempty"`
-	LastSeenCoordinates  []*InputCoordinates `json:"lastSeenCoordinates"`
-	UsersWhoSightedTiger []string            `json:"usersWhoSightedTiger"`
+	Name                string            `json:"name"`
+	Dob                 string            `json:"dob"`
+	LastSeenTimeStamp   string            `json:"lastSeenTimeStamp"`
+	ImageURL            *string           `json:"imageURL,omitempty"`
+	LastSeenCoordinates *InputCoordinates `json:"lastSeenCoordinates"`
+	ReporterUserName    string            `json:"reporterUserName"`
 }
 
 type CreateUserInput struct {
@@ -72,8 +82,8 @@ type LoginUserInput struct {
 }
 
 type SightingOfTigerInput struct {
-	LastSeenTimeStamp    []string            `json:"lastSeenTimeStamp"`
-	LastSeenCoordinates  []*InputCoordinates `json:"lastSeenCoordinates"`
-	ImageURL             string              `json:"imageURL"`
-	UsersWhoSightedTiger []string            `json:"usersWhoSightedTiger"`
+	LastSeenTimeStamp   string            `json:"lastSeenTimeStamp"`
+	LastSeenCoordinates *InputCoordinates `json:"lastSeenCoordinates"`
+	ImageURL            string            `json:"imageURL"`
+	ReporterUserName    string            `json:"reporterUserName"`
 }

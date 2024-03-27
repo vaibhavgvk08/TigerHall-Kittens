@@ -1,9 +1,5 @@
 package database
 
-import (
-	"fmt"
-)
-
 type DBManager struct {
 	client Database
 }
@@ -25,7 +21,6 @@ func (obj *DBManager) CloseConnection() {
 func (obj *DBManager) Insert(entity int, doc interface{}) (result interface{}, err error) {
 	dataBase, col := GetDBAndCollByEntity(entity)
 	result, err = obj.client.Insert(dataBase, col, doc)
-	fmt.Print(result)
 	return result, err
 }
 

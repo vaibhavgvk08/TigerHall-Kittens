@@ -13,3 +13,8 @@ const (
 )
 
 var SECRET_KEY = []byte("gosecretkey")
+
+const (
+	SUCCESS = "Success"
+	FAILURE = "Failure"
+)

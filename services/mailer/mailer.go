@@ -17,7 +17,7 @@ func SendEmails(emailCh <-chan common.EmailData) {
 // todo - Integrate a better thrid party mailing service like mailtrap later.
 func sendEmail(emailData common.EmailData) {
 	defer func() {
-		log.Println("Email sent.\n")
+		log.Println("Email sent.")
 	}()
 
 	m := mail.NewMessage()
@@ -26,9 +26,9 @@ func sendEmail(emailData common.EmailData) {
 
 	m.SetHeader("To", emailData.To)
 
-	m.SetHeader("Subject", "TigerHall - Kittens!")
+	m.SetHeader("Subject", EMAIL_SUBJECT)
 
-	m.SetBody("text/html", fmt.Sprintf(EMAIL_BODY, emailData.UserName, *emailData.TigerName, emailData.TigerLastSeenTimestamp, emailData.TigerLastSeenCoordinates.Lat, emailData.TigerLastSeenCoordinates.Long))
+	m.SetBody("text/html", fmt.Sprintf(EMAIL_BODY, *emailData.TigerName, emailData.TigerLastSeenTimestamp, emailData.TigerLastSeenCoordinates.Lat, emailData.TigerLastSeenCoordinates.Long))
 
 	d := mail.NewDialer(EMAIL_HOST, 587, EMAIL_USERNAME, EMAIL_TOKEN)
 
